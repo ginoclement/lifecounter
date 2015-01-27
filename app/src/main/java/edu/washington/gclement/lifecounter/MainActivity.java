@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     private ArrayList<Magician> magicians = new ArrayList<Magician>();
     private ArrayList<Button> buttons = new ArrayList<Button>();
+    private ArrayList<TextView> scores = new ArrayList<TextView>();
     private int maxPlayers = 4;
     private int width;
     private int height;
@@ -36,11 +37,29 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         for(int i = 0; i < maxPlayers; i++){
             magicians.add(new Magician());
         }
-        for(Button btn : buttons){
-            btn.setOnClickListener(this);
-            btn.setHeight(height / 10);
-            btn.setWidth(width / 10);
-        }
+
+        buttons.add((Button) findViewById(R.id.play1plus1));
+        buttons.add((Button) findViewById(R.id.play1plus5));
+        buttons.add((Button) findViewById(R.id.play1minus1));
+        buttons.add((Button) findViewById(R.id.play1minus5));
+        buttons.add((Button) findViewById(R.id.play2plus1));
+        buttons.add((Button) findViewById(R.id.play2plus5));
+        buttons.add((Button) findViewById(R.id.play2minus1));
+        buttons.add((Button) findViewById(R.id.play2minus5));
+        buttons.add((Button) findViewById(R.id.play3plus1));
+        buttons.add((Button) findViewById(R.id.play3plus5));
+        buttons.add((Button) findViewById(R.id.play3minus1));
+        buttons.add((Button) findViewById(R.id.play3minus5));
+        buttons.add((Button) findViewById(R.id.play4plus1));
+        buttons.add((Button) findViewById(R.id.play4plus5));
+        buttons.add((Button) findViewById(R.id.play4minus1));
+        buttons.add((Button) findViewById(R.id.play4minus5));
+
+        scores.add((TextView) findViewById(R.id.play1health));
+        scores.add((TextView) findViewById(R.id.play2health));
+        scores.add((TextView) findViewById(R.id.play3health));
+        scores.add((TextView) findViewById(R.id.play4health));
+
     }
 
     @Override
@@ -101,28 +120,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onStart(){
         super.onStart();
 
-        buttons.add((Button) findViewById(R.id.play1plus1));
-        buttons.add((Button) findViewById(R.id.play1plus5));
-        buttons.add((Button) findViewById(R.id.play1minus1));
-        buttons.add((Button) findViewById(R.id.play1minus5));
-        buttons.add((Button) findViewById(R.id.play2plus1));
-        buttons.add((Button) findViewById(R.id.play2plus5));
-        buttons.add((Button) findViewById(R.id.play2minus1));
-        buttons.add((Button) findViewById(R.id.play2minus5));
-        buttons.add((Button) findViewById(R.id.play3plus1));
-        buttons.add((Button) findViewById(R.id.play3plus5));
-        buttons.add((Button) findViewById(R.id.play3minus1));
-        buttons.add((Button) findViewById(R.id.play3minus5));
-        buttons.add((Button) findViewById(R.id.play4plus1));
-        buttons.add((Button) findViewById(R.id.play4plus5));
-        buttons.add((Button) findViewById(R.id.play4minus1));
-        buttons.add((Button) findViewById(R.id.play4minus5));
-
-
         for(Button btn : buttons){
             btn.setOnClickListener(this);
             btn.setHeight(height / 10);
             btn.setWidth(width / 10);
+        }
+
+        for(int i = 0; i < magicians.size(); i++){
+            scores.get(i).setText("" + magicians.get(i).getHealth());
         }
 
 
@@ -153,8 +158,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     private class Magician {
-        int health;
-        boolean isAlive;
+        private int health;
+        private boolean isAlive;
 
         public Magician(){
             this.health = 20;
@@ -172,6 +177,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     txtDeath.setText(getString(R.string.death, player));
                 }
             }
+        }
+
+        public int getHealth(){
+            return this.health;
         }
 
         public boolean isAlive(){
