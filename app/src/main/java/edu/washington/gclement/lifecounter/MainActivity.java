@@ -1,6 +1,8 @@
 package edu.washington.gclement.lifecounter;
 
 import android.graphics.Point;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,8 +36,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         width = display.getWidth();
         height = display.getHeight();
         setContentView(R.layout.activity_main);
-        for(int i = 0; i < maxPlayers; i++){
-            magicians.add(new Magician());
+        if(savedInstanceState != null){
+            magicians = savedInstanceState.getParcelableArrayList("magicians");
+        } else {
+            for(int i = 0; i < maxPlayers; i++){
+                magicians.add(new Magician());
+            }
         }
 
         buttons.add((Button) findViewById(R.id.play1plus1));
@@ -64,56 +70,76 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        int health = 20;
+        int id = 0;
         switch (v.getId()) {
             case R.id.play1plus1:
-                magicians.get(0).changeHealth(1, R.id.play1health, "1");
+                id = R.id.play1health;
+                health = magicians.get(0).changeHealth(1, id, "1");
                 break;
             case R.id.play2plus1:
-                magicians.get(1).changeHealth(1, R.id.play2health, "2");
+                id = R.id.play2health;
+                health = magicians.get(1).changeHealth(1, id, "2");
                 break;
             case R.id.play3plus1:
-                magicians.get(2).changeHealth(1, R.id.play3health, "3");
+                id = R.id.play3health;
+                health = magicians.get(2).changeHealth(1, id, "3");
                 break;
             case R.id.play4plus1:
-                magicians.get(3).changeHealth(1, R.id.play4health, "4");
+                id = R.id.play4health;
+                health = magicians.get(3).changeHealth(1, id, "4");
                 break;
             case R.id.play1plus5:
-                magicians.get(0).changeHealth(5, R.id.play1health, "1");
+                id = R.id.play1health;
+                health = magicians.get(0).changeHealth(5, id, "1");
                 break;
             case R.id.play2plus5:
-                magicians.get(1).changeHealth(5, R.id.play2health, "2");
+                id = R.id.play2health;
+                health = magicians.get(1).changeHealth(5, id, "2");
                 break;
             case R.id.play3plus5:
-                magicians.get(2).changeHealth(5, R.id.play3health, "3");
+                id = R.id.play3health;
+                health = magicians.get(2).changeHealth(5, id, "3");
                 break;
             case R.id.play4plus5:
-                magicians.get(3).changeHealth(5, R.id.play4health, "4");
+                id = R.id.play4health;
+                health = magicians.get(3).changeHealth(5, id, "4");
                 break;
             case R.id.play1minus1:
-                magicians.get(0).changeHealth(-1, R.id.play1health, "1");
+                id = R.id.play1health;
+                health = magicians.get(0).changeHealth(-1, id, "1");
                 break;
             case R.id.play2minus1:
-                magicians.get(1).changeHealth(-1, R.id.play2health, "2");
+                id = R.id.play2health;
+                health = magicians.get(1).changeHealth(-1, id, "2");
                 break;
             case R.id.play3minus1:
-                magicians.get(2).changeHealth(-1, R.id.play3health, "3");
+                id = R.id.play3health;
+                health = magicians.get(2).changeHealth(-1, id, "3");
                 break;
             case R.id.play4minus1:
-                magicians.get(3).changeHealth(-1, R.id.play4health, "4");
+                id = R.id.play4health;
+                health = magicians.get(3).changeHealth(-1, id, "4");
                 break;
             case R.id.play1minus5:
-                magicians.get(0).changeHealth(-5, R.id.play1health, "1");
+                id = R.id.play1health;
+                health = magicians.get(0).changeHealth(-5, id, "1");
                 break;
             case R.id.play2minus5:
-                magicians.get(1).changeHealth(-5, R.id.play2health, "2");
+                id = R.id.play2health;
+                health = magicians.get(1).changeHealth(-5, id, "2");
                 break;
             case R.id.play3minus5:
-                magicians.get(2).changeHealth(-5, R.id.play3health, "3");
+                id = R.id.play3health;
+                health = magicians.get(2).changeHealth(-5, id, "3");
                 break;
             case R.id.play4minus5:
-                magicians.get(3).changeHealth(-5, R.id.play4health, "4");
+                id = R.id.play4health;
+                health = magicians.get(3).changeHealth(-5, id, "4");
                 break;
         }
+        TextView txtHealth = (TextView) findViewById(id);
+        txtHealth.setText("" + health);
     }
 
     @Override
@@ -129,8 +155,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         for(int i = 0; i < magicians.size(); i++){
             scores.get(i).setText("" + magicians.get(i).getHealth());
         }
+    }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle state){
+           state.putParcelableArrayList("magicians", magicians);
     }
 
 
@@ -157,7 +186,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
-    private class Magician {
+    private class Magician implements Parcelable{
         private int health;
         private boolean isAlive;
 
@@ -166,17 +195,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             this.isAlive = true;
         }
 
-        public void changeHealth(int change, int id, String player){
+        public int changeHealth(int change, int id, String player){
             if(isAlive) {
                 this.health += change;
-                TextView txtHealth = (TextView) findViewById(id);
-                txtHealth.setText("" + this.health);
                 if (this.health <= 0) {
                     this.isAlive = false;
                     TextView txtDeath = (TextView) findViewById(R.id.death);
                     txtDeath.setText(getString(R.string.death, player));
                 }
             }
+            return this.health;
         }
 
         public int getHealth(){
@@ -185,6 +213,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         public boolean isAlive(){
             return this.isAlive;
+        }
+
+        @Override
+        public int describeContents() {
+            return this.hashCode();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            out.writeInt(this.health);
         }
     }
 }
