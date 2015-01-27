@@ -1,8 +1,10 @@
 package edu.washington.gclement.lifecounter;
 
+import android.graphics.Point;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,14 +16,30 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     private ArrayList<Magician> magicians = new ArrayList<Magician>();
+    private ArrayList<Button> buttons = new ArrayList<Button>();
     private int maxPlayers = 4;
+    private int width;
+    private int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Display display = getWindowManager().getDefaultDisplay();
+//        Android level greater than level 13
+//        Point p = new Point();
+//        display.getSize(p);
+//        width = p.x;
+//        height = p.y;
+        width = display.getWidth();
+        height = display.getHeight();
         setContentView(R.layout.activity_main);
         for(int i = 0; i < maxPlayers; i++){
             magicians.add(new Magician());
+        }
+        for(Button btn : buttons){
+            btn.setOnClickListener(this);
+            btn.setHeight(height / 10);
+            btn.setWidth(width / 10);
         }
     }
 
@@ -82,42 +100,30 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onStart(){
         super.onStart();
-        Button btnp1p1 = (Button) findViewById(R.id.play1plus1);
-        Button btnp1p5 = (Button) findViewById(R.id.play1plus5);
-        Button btnp1m1 = (Button) findViewById(R.id.play1minus1);
-        Button btnp1m5 = (Button) findViewById(R.id.play1minus5);
-        Button btnp2p1 = (Button) findViewById(R.id.play2plus1);
-        Button btnp2p5 = (Button) findViewById(R.id.play2plus5);
-        Button btnp2m1 = (Button) findViewById(R.id.play2minus1);
-        Button btnp2m5 = (Button) findViewById(R.id.play2minus5);
-        Button btnp3p1 = (Button) findViewById(R.id.play3plus1);
-        Button btnp3p5 = (Button) findViewById(R.id.play3plus5);
-        Button btnp3m1 = (Button) findViewById(R.id.play3minus1);
-        Button btnp3m5 = (Button) findViewById(R.id.play3minus5);
-        Button btnp4p1 = (Button) findViewById(R.id.play4plus1);
-        Button btnp4p5 = (Button) findViewById(R.id.play4plus5);
-        Button btnp4m1 = (Button) findViewById(R.id.play4minus1);
-        Button btnp4m5 = (Button) findViewById(R.id.play4minus5);
 
-        btnp1p1.setOnClickListener(this);
-        btnp2p1.setOnClickListener(this);
-        btnp3p1.setOnClickListener(this);
-        btnp4p1.setOnClickListener(this);
+        buttons.add((Button) findViewById(R.id.play1plus1));
+        buttons.add((Button) findViewById(R.id.play1plus5));
+        buttons.add((Button) findViewById(R.id.play1minus1));
+        buttons.add((Button) findViewById(R.id.play1minus5));
+        buttons.add((Button) findViewById(R.id.play2plus1));
+        buttons.add((Button) findViewById(R.id.play2plus5));
+        buttons.add((Button) findViewById(R.id.play2minus1));
+        buttons.add((Button) findViewById(R.id.play2minus5));
+        buttons.add((Button) findViewById(R.id.play3plus1));
+        buttons.add((Button) findViewById(R.id.play3plus5));
+        buttons.add((Button) findViewById(R.id.play3minus1));
+        buttons.add((Button) findViewById(R.id.play3minus5));
+        buttons.add((Button) findViewById(R.id.play4plus1));
+        buttons.add((Button) findViewById(R.id.play4plus5));
+        buttons.add((Button) findViewById(R.id.play4minus1));
+        buttons.add((Button) findViewById(R.id.play4minus5));
 
-        btnp1p5.setOnClickListener(this);
-        btnp2p5.setOnClickListener(this);
-        btnp3p5.setOnClickListener(this);
-        btnp4p5.setOnClickListener(this);
 
-        btnp1m1.setOnClickListener(this);
-        btnp2m1.setOnClickListener(this);
-        btnp3m1.setOnClickListener(this);
-        btnp4m1.setOnClickListener(this);
-
-        btnp1m5.setOnClickListener(this);
-        btnp2m5.setOnClickListener(this);
-        btnp3m5.setOnClickListener(this);
-        btnp4m5.setOnClickListener(this);
+        for(Button btn : buttons){
+            btn.setOnClickListener(this);
+            btn.setHeight(height / 10);
+            btn.setWidth(width / 10);
+        }
 
 
     }
