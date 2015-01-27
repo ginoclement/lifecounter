@@ -29,52 +29,52 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.play1plus1:
-                magicians.get(0).changeHealth(1, R.id.play1health);
+                magicians.get(0).changeHealth(1, R.id.play1health, "1");
                 break;
             case R.id.play2plus1:
-                magicians.get(1).changeHealth(1, R.id.play2health);
+                magicians.get(1).changeHealth(1, R.id.play2health, "2");
                 break;
             case R.id.play3plus1:
-                magicians.get(2).changeHealth(1, R.id.play3health);
+                magicians.get(2).changeHealth(1, R.id.play3health, "3");
                 break;
             case R.id.play4plus1:
-                magicians.get(3).changeHealth(1, R.id.play4health);
+                magicians.get(3).changeHealth(1, R.id.play4health, "4");
                 break;
             case R.id.play1plus5:
-                magicians.get(0).changeHealth(5, R.id.play1health);
+                magicians.get(0).changeHealth(5, R.id.play1health, "1");
                 break;
             case R.id.play2plus5:
-                magicians.get(1).changeHealth(5, R.id.play2health);
+                magicians.get(1).changeHealth(5, R.id.play2health, "2");
                 break;
             case R.id.play3plus5:
-                magicians.get(2).changeHealth(5, R.id.play3health);
+                magicians.get(2).changeHealth(5, R.id.play3health, "3");
                 break;
             case R.id.play4plus5:
-                magicians.get(3).changeHealth(5, R.id.play4health);
+                magicians.get(3).changeHealth(5, R.id.play4health, "4");
                 break;
             case R.id.play1minus1:
-                magicians.get(0).changeHealth(-1, R.id.play1health);
+                magicians.get(0).changeHealth(-1, R.id.play1health, "1");
                 break;
             case R.id.play2minus1:
-                magicians.get(1).changeHealth(-1, R.id.play2health);
+                magicians.get(1).changeHealth(-1, R.id.play2health, "2");
                 break;
             case R.id.play3minus1:
-                magicians.get(2).changeHealth(-1, R.id.play3health);
+                magicians.get(2).changeHealth(-1, R.id.play3health, "3");
                 break;
             case R.id.play4minus1:
-                magicians.get(3).changeHealth(-1, R.id.play4health);
+                magicians.get(3).changeHealth(-1, R.id.play4health, "4");
                 break;
             case R.id.play1minus5:
-                magicians.get(0).changeHealth(-5, R.id.play1health);
+                magicians.get(0).changeHealth(-5, R.id.play1health, "1");
                 break;
             case R.id.play2minus5:
-                magicians.get(1).changeHealth(-5, R.id.play2health);
+                magicians.get(1).changeHealth(-5, R.id.play2health, "2");
                 break;
             case R.id.play3minus5:
-                magicians.get(2).changeHealth(-5, R.id.play3health);
+                magicians.get(2).changeHealth(-5, R.id.play3health, "3");
                 break;
             case R.id.play4minus5:
-                magicians.get(3).changeHealth(-5, R.id.play4health);
+                magicians.get(3).changeHealth(-5, R.id.play4health, "4");
                 break;
         }
     }
@@ -155,15 +155,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             this.isAlive = true;
         }
 
-        public int changeHealth(int change, int id){
-            Log.i("info", "" + id);
-            this.health += change;
-            TextView txtHealth = (TextView) findViewById(id);
-            txtHealth.setText("" + this.health);
-            if(this.health <= 0){
-                this.isAlive = false;
+        public void changeHealth(int change, int id, String player){
+            if(isAlive) {
+                this.health += change;
+                TextView txtHealth = (TextView) findViewById(id);
+                txtHealth.setText("" + this.health);
+                if (this.health <= 0) {
+                    this.isAlive = false;
+                    TextView txtDeath = (TextView) findViewById(R.id.death);
+                    txtDeath.setText(getString(R.string.death, player));
+                }
             }
-            return this.health;
         }
 
         public boolean isAlive(){
